@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 200" fill="none" stroke="#241f21" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+  <!-- meja piknik: daun meja + 2 bangku, gaya garis -->
+  <rect x="110" y="10" width="200" height="14" rx="3"/>
+  <path d="M130 24h160"/>
+  <path d="M128 24 150 198h22L160 24"/><path d="M292 24 270 198h-22L260 24"/>
+  <path d="M138 198h146"/>
+  <rect x="8" y="88" width="96" height="12" rx="3"/><path d="M14 100 26 198h14L32 100"/><path d="M98 100 86 198H72L80 100"/>
+  <rect x="316" y="88" width="96" height="12" rx="3"/><path d="M322 100 334 198h14L340 100"/><path d="M406 100 394 198h-14l8-98"/>
+  <path d="M20 10h0M40 10h0" />
+</svg>

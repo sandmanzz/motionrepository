@@ -1,0 +1,82 @@
+/*
+ * Zoom Field — styles
+ * Semua selector diawali .zf. Ruang 3D: .zf__stage (perspective) > .zf__world (preserve-3d) > tile.
+ */
+.zf {
+  --zf-bg: #ffffff;
+  --zf-ink: #111111;
+  --zf-logo-font: "Josefin Sans", "Futura", "Century Gothic", sans-serif;
+  --zf-font: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--zf-bg);
+  color: var(--zf-ink);
+  font-family: var(--zf-font);
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+.zf.is-dragging { cursor: grabbing; }
+.zf.is-hovering:not(.is-dragging) { cursor: pointer; }
+.zf *, .zf *::before, .zf *::after { box-sizing: border-box; }
+
+.zf__stage { position: absolute; inset: 0; perspective-origin: 50% 50%; overflow: hidden; }
+.zf__world { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; will-change: transform; }
+
+.zf__tile {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  overflow: hidden;
+  background: #eee;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  opacity: 0;
+}
+.zf__tile img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transform-origin: 50% 50%; transition: filter .4s linear; }
+.zf__tile.is-gray img { filter: grayscale(1); }
+
+/* wordmark raksasa di bidang z = 0 */
+.zf__logo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  font-family: var(--zf-logo-font);
+  font-weight: 400;
+  line-height: 0.8;
+  letter-spacing: 0.02em;
+  color: var(--zf-ink);
+  pointer-events: none;
+  will-change: transform;
+}
+.zf__logo span { display: inline-block; opacity: 0; transition: opacity 1s linear; }
+.zf--in .zf__logo span { opacity: 1; }
+
+/* label proyek mengikuti kursor */
+.zf__label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  margin: 18px 0 0 18px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--zf-ink);
+  color: #fff;
+  font-size: 13px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+.zf.is-hovering:not(.is-dragging) .zf__label:not(:empty) { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .zf__logo span, .zf__tile img, .zf__label { transition: none; }
+}

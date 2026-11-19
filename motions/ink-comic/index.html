@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ink Comic — Stock Motion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="motion.css">
+  <style>
+    html, body { margin: 0; background: #f2f1ee; }
+    .demo-end { height: 60vh; display: grid; place-items: center; font: 500 14px "Archivo Narrow", sans-serif; letter-spacing: .1em; color: #888; }
+  </style>
+</head>
+<body>
+
+  <!-- ====== MOTION: mulai salin dari sini ====== -->
+  <section class="ic" data-motion>
+    <div class="ic__stage">
+      <canvas class="ic__canvas"></canvas>
+      <div class="ic__caption"></div>
+    </div>
+  </section>
+  <!-- ====== MOTION: sampai sini ====== -->
+
+  <div class="demo-end">SCROLL KE ATAS UNTUK MENGULANG</div>
+
+  <script src="motion.js"></script>
+  <script>
+    window.ink = InkComic.mount(document.querySelector("[data-motion]"), {
+      image: "assets/wanderer.webp"
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 520" fill="none" stroke="#241f21" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+  <!-- tiang lampu taman dengan lengan ke kiri -->
+  <rect x="96" y="8" width="40" height="510" rx="4"/>
+  <path d="M104 8v510"/>
+  <path d="M96 40H18a10 10 0 0 0-10 10v14h88"/>
+  <path d="M18 64v10h28V64"/>
+  <circle cx="116" cy="70" r="12"/><path d="M116 62v8l5 4"/>
+  <rect x="106" y="100" width="20" height="40" rx="6"/>
+  <path d="M136 160h10v22h-10"/>
+  <path d="M116 400v80M104 400h24"/>
+</svg>

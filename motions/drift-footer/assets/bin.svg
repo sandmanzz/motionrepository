@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 330" fill="none" stroke="#241f21" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+  <!-- tempat sampah bilah vertikal -->
+  <path d="M20 22l8-14 10 6-4 8"/>
+  <rect x="4" y="22" width="122" height="10" rx="2"/>
+  <rect x="8" y="32" width="114" height="294" rx="2"/>
+  <path d="M8 64h114"/>
+  <path d="M20 72v246M36 72v246M52 72v246M68 72v246M84 72v246M100 72v246"/>
+</svg>

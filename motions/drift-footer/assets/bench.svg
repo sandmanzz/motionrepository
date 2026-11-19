@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 300" fill="none" stroke="#241f21" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+  <!-- kursi taman miring dengan sandaran bilah -->
+  <path d="M30 20 52 140"/><path d="M14 24l16-4 4 22-16 4z"/><path d="M20 50l16-4 4 22-16 4z"/><path d="M26 78l16-4 4 22-16 4z"/>
+  <path d="M52 140 180 130l6 42"/>
+  <rect x="50" y="160" width="160" height="22" rx="4"/>
+  <path d="M74 160v-14h22v14M104 160v-14h22v14M134 160v-14h22v14M164 160v-14h22v14"/>
+  <path d="M50 182 36 296h170l4-114"/>
+</svg>

@@ -46,8 +46,25 @@ Mengambil motion ke project = salin `motions/<id>/`, ikuti README di dalamnya.
 | --- | --- | --- |
 | `product-swap` | Product Swap Conveyor | switchblade-awwwards.vercel.app |
 | `particle-hero` | Particle Relief Hero | tigris.lorolabs.ai |
+| `outfit-loader` | Outfit Preloader | outfit.hellohello.is |
+| `orbit-words` | Orbit Words | switchblade-awwwards.vercel.app |
+| `drift-footer` | Drift Footer | floema.com |
+| `akaru-projects` | Akaru Projects Scroll | akaru.fr |
+| `c2-lenses` | C2 Lenses | c2mtl.koki-kiko.com |
+| `zoom-field` | Zoom Field | powerhouse-company.com |
+| `ink-comic` | Ink Comic | santionispirits.com (2D) |
+| `card-helix` | Card Helix | ebuka.marketing |
+| `press-wheels` | Press Wheels | carterogunsola.com |
 
 ## Projects
 | Folder | Isi |
 | --- | --- |
 | `projects/arunika-park` | Landing page taman bermain: scroll = naik roller coaster |
+
+## Studi
+Bedah mendalam situs referensi (cara kerja, desain, cara pembuatan, playbook reusable):
+| File | Situs |
+| --- | --- |
+| `studies/santioni-spirits.md` | santionispirits.com (Active Theory + Plan8) |
+
+Katalog teknik semua motion: `PATTERNS.md`.

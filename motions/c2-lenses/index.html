@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>C2 Lenses — Stock Motion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="motion.css">
+  <style>html, body { margin: 0; background: #141414; overflow-x: hidden; }</style>
+</head>
+<body>
+
+  <!-- ====== MOTION: mulai salin dari sini ====== -->
+  <div class="c2" data-motion>
+    <div class="c2__bg" aria-hidden="true">
+      <div class="c2__bgBlue"><span></span></div>
+      <div class="c2__bgPeach"><span></span></div>
+    </div>
+    <div class="c2__logo" aria-hidden="true"><canvas></canvas></div>
+
+    <section class="c2__hero">
+      <h1 class="c2__title">
+        <span class="c2__line"><span data-split="0.15">STOCK</span><div class="c2__black" aria-hidden="true"></div></span>
+        <span class="c2__line"><span data-split="0.3">12</span><sup><span data-split="0.4">th</span></sup></span>
+        <span class="c2__line"><span data-split="0.45">edition</span></span>
+      </h1>
+
+      <div class="c2__date">
+        <span class="c2__line"><span data-split="0">May</span></span>
+        <span class="c2__line"><span data-split="0.15">24-26</span></span>
+        <span class="c2__line"><span data-split="0.3">2026</span></span>
+
+        <div class="c2__grad" aria-hidden="true"></div>
+        <div class="c2__hl">
+          <h2>A creative-business gathering</h2>
+          <p>Stock Motion brings people and ideas from different fields together to see the same problem through many lenses. Business is about people, so their stories sit at the centre of the conversation.</p>
+        </div>
+        <div class="c2__cta">
+          <div class="c2__ctaFig"><img src="assets/keynote.webp" alt=""></div>
+          <button class="c2__ctaBtn" type="button"><span>Get passes</span></button>
+        </div>
+        <div class="c2__video"><img src="assets/installation.webp" alt=""></div>
+      </div>
+    </section>
+
+    <div class="c2__words">
+      <div class="c2__wordsInner">
+        <ul class="c2__wordsList">
+          <li class="c2__word" data-split>Share.</li>
+          <li class="c2__word" data-split>Connect.</li>
+          <li class="c2__word" data-split>Learn.</li>
+        </ul>
+      </div>
+    </div>
+
+    <section class="c2__masked">
+      <h2>Combined lenses bring the world into sharper focus</h2>
+    </section>
+    <section class="c2__after">
+      <h3>Previous edition — Speakers</h3>
+      <p>Talks open the door to deeper exploration of topics and themes, and are an invitation to find inspiration.</p>
+    </section>
+  </div>
+  <!-- ====== MOTION: sampai sini ====== -->
+
+  <script src="motion.js"></script>
+  <script>
+    window.c2 = C2Lenses.mount(document.querySelector("[data-motion]"));
+  </script>
+</body>
+</html>

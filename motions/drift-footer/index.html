@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Drift Footer — Stock Motion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="motion.css">
+  <style>
+    html, body { margin: 0; background: #f4f2e6; font-family: "Figtree", Helvetica, Arial, sans-serif; color: #241f21; }
+    .demo-pad { height: 45vh; display: grid; place-items: center; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; opacity: .5; }
+  </style>
+</head>
+<body>
+  <div class="demo-pad">Scroll ke footer ↓</div>
+
+  <!-- ====== MOTION: mulai salin dari sini ====== -->
+  <footer class="fd" data-motion>
+    <div class="fd__grid">
+      <div class="fd__brand" aria-hidden="true">
+        <span class="fd__glyph">S</span>
+        <span class="fd__reg">R</span>
+      </div>
+
+      <div class="fd__content">
+        <div class="fd__row fd__row--top" data-fd-trigger>
+          <img class="fd__art fd__art--table" src="assets/table.svg" alt="" data-fd-drift="-3vw,0vw" data-fd-range="1,0.45">
+          <span class="fd__line" data-fd-line></span>
+        </div>
+
+        <div class="fd__row fd__row--info" data-fd-trigger>
+          <div class="fd__cols" data-fd-reveal>
+            <div><h5>Studio</h5><p>Jl. Contoh No. 12
+Kemang, Jakarta Selatan
+hello@stockmotion.dev</p></div>
+            <div><h5>Workshop</h5><p>Kawasan Industri Blok B
+Lot 41
+Bekasi, Jawa Barat</p></div>
+            <div><h5>Showroom</h5><p>Jl. Braga 88
+Bandung
+Jawa Barat</p></div>
+          </div>
+          <img class="fd__art fd__art--lamp" src="assets/lamp.svg" alt="" data-fd-drift="2vw,0vw" data-fd-range="1,0.55">
+          <span class="fd__line" data-fd-line></span>
+        </div>
+
+        <div class="fd__row fd__row--links" data-fd-trigger>
+          <img class="fd__art fd__art--bench" src="assets/bench.svg" alt="" data-fd-drift="-10%,10%" data-fd-range="1,1">
+          <nav class="fd__links">
+            <div class="fd__main" data-fd-reveal>
+              <a href="#">Products</a><a href="#">About</a><a href="#">Sustainability</a><a href="#">Journal</a>
+            </div>
+            <div class="fd__sub" data-fd-reveal>
+              <a href="#">Careers</a><a href="#">Privacy Policy</a><a href="#">Terms and Conditions</a>
+            </div>
+            <div class="fd__sub" data-fd-reveal>
+              <a href="#">Terms of Sale</a><a href="#">Cookie Policy</a>
+            </div>
+          </nav>
+          <img class="fd__art fd__art--bin" src="assets/bin.svg" alt="" data-fd-drift="100%,0%" data-fd-range="1,1">
+          <span class="fd__line" data-fd-line></span>
+        </div>
+
+        <div class="fd__row fd__row--copy" data-fd-reveal>
+          <span>© 2026 Stock Motion</span><span>Made with care</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- ====== MOTION: sampai sini ====== -->
+
+  <script src="motion.js"></script>
+  <script>
+    DriftFooter.mount(document.querySelector("[data-motion]"));
+  </script>
+</body>
+</html>

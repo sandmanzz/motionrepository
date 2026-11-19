@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zoom Field — Stock Motion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Josefin+Sans:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="motion.css">
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #fff; }
+    .demo-nav { position: fixed; top: 22px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 2px; padding: 4px; background: #fff; border-radius: 6px; box-shadow: 0 2px 18px rgba(0,0,0,.08); font: 500 14px Inter, sans-serif; }
+    .demo-nav a { color: #111; text-decoration: none; padding: 8px 12px; border-radius: 4px; }
+    .demo-nav a:hover { background: #f2f2f2; }
+    .demo-hint { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 10; font: 500 12px Inter, sans-serif; color: #888; letter-spacing: .04em; text-transform: uppercase; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <nav class="demo-nav"><a href="#">Projects</a><a href="#">Team</a><a href="#">Stories</a><a href="#">About</a><a href="#">Contact</a></nav>
+
+  <!-- ====== MOTION: mulai salin dari sini ====== -->
+  <div data-motion></div>
+  <!-- ====== MOTION: sampai sini ====== -->
+
+  <div class="demo-hint">Scroll / pinch untuk zoom · drag untuk geser</div>
+
+  <script src="motion.js"></script>
+  <script>
+    var src = [
+      ["p01", "Altavilla", "landscape"], ["p09", "Lookbook 01", "portrait"], ["p15", "Arunika Station", "landscape"],
+      ["p02", "Terraco Studio", "square"], ["p10", "Lookbook 02", "portrait"], ["p04", "Stride Lab", "square"],
+      ["p16", "The Crest", "landscape"], ["p05", "Datafield", "landscape"], ["p11", "Lookbook 03", "portrait"],
+      ["p06", "Haute Vallée", "landscape"], ["p17", "Tirta", "square"], ["p07", "Lens Pavilion", "landscape"],
+      ["p12", "Lookbook 04", "portrait"], ["p03", "Miko", "square"], ["p18", "Dongeng Cave", "landscape"],
+      ["p08", "Keynote Hall", "landscape"], ["p13", "Lookbook 05", "portrait"], ["p19", "Guntur", "square"],
+      ["p20", "Night Market", "landscape"], ["p14", "Lookbook 06", "portrait"]
+    ];
+    // 40 tile: daftar diulang dengan urutan digeser supaya duplikat tidak bersebelahan
+    var items = src.concat(src.slice(7), src.slice(0, 7)).map(function (s) {
+      return { src: "assets/" + s[0] + ".webp", title: s[1], orientation: s[2] };
+    });
+    window.field = ZoomField.mount(document.querySelector("[data-motion]"), {
+      items: items,
+      word: "STOCKMOTION",
+      onOpen: function (item) { console.log("open", item.title); }
+    });
+  </script>
+</body>
+</html>

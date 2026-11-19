@@ -1,0 +1,106 @@
+/*
+ * Drift Footer — styles
+ * Semua selector diawali .fd. Tema lewat custom property di .fd.
+ */
+.fd {
+  --fd-bg: #e9e778;
+  --fd-ink: #241f21;
+  --fd-font: "Figtree", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --fd-pad: clamp(20px, 2.2vw, 44px);
+  --fd-line-dur: 1s;
+
+  position: relative;
+  overflow: hidden;
+  background: var(--fd-bg);
+  color: var(--fd-ink);
+  font-family: var(--fd-font);
+  padding: var(--fd-pad);
+}
+.fd *, .fd *::before, .fd *::after { box-sizing: border-box; }
+
+.fd__grid {
+  display: grid;
+  grid-template-columns: 36% 1fr;
+  gap: 0 3%;
+}
+
+/* kolom kiri: tanda besar */
+.fd__brand { position: relative; min-height: 100%; }
+.fd__glyph {
+  display: block;
+  font-weight: 900;
+  font-size: clamp(260px, 38vw, 760px);
+  line-height: 0.78;
+  letter-spacing: -0.06em;
+  margin-left: -0.04em;
+}
+.fd__reg {
+  position: absolute;
+  left: 30%;
+  bottom: 2%;
+  width: clamp(64px, 7vw, 140px);
+  aspect-ratio: 1;
+  border: clamp(8px, 0.9vw, 16px) solid currentColor;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  font-size: clamp(36px, 4vw, 80px);
+}
+
+/* kolom kanan: baris-baris dengan garis bawah */
+.fd__row { position: relative; }
+.fd__row--top { height: clamp(140px, 13vw, 240px); }
+.fd__row--info { padding: clamp(60px, 6vw, 110px) 0 clamp(70px, 7vw, 130px); }
+.fd__row--links { padding: clamp(36px, 3.4vw, 64px) 0 clamp(70px, 7vw, 120px); }
+.fd__row--copy { display: flex; justify-content: space-between; padding: 22px 0 6px; font-size: 13px; }
+
+.fd__line {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+}
+.fd--js .fd__line { width: 0; transition: width var(--fd-line-dur) cubic-bezier(0.22, 0.61, 0.36, 1); } /* ≈ power2.out */
+.fd--js .fd__line.is-in { width: 100%; }
+
+/* ilustrasi garis: selalu duduk di garis bawah barisnya */
+.fd__art { position: absolute; bottom: 0; display: block; height: auto; will-change: transform; pointer-events: none; }
+.fd__art--table { left: 14%; width: clamp(180px, 22vw, 400px); }
+.fd__art--lamp  { right: 6%; width: clamp(60px, 7vw, 130px); }
+.fd__art--bench { left: -15%; width: clamp(110px, 11vw, 200px); }
+.fd__art--bin   { right: 18%; width: clamp(60px, 6.4vw, 120px); }
+
+.fd__cols {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  max-width: 78%;
+}
+.fd__cols h5 { margin: 0 0 14px; font-size: clamp(18px, 1.4vw, 26px); font-weight: 500; }
+.fd__cols p  { margin: 0; font-size: clamp(14px, 1vw, 18px); line-height: 1.45; white-space: pre-line; }
+
+.fd__links { display: grid; grid-template-columns: auto auto; gap: 28px 64px; justify-content: start; }
+.fd__main { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 2px; }
+.fd__main a { font-size: clamp(20px, 1.6vw, 30px); font-weight: 500; }
+.fd__sub { display: flex; flex-direction: column; gap: 8px; font-size: clamp(14px, 1vw, 18px); }
+.fd a { color: inherit; text-decoration: none; width: fit-content; }
+.fd a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* reveal: fade + naik, ≈ power2.out */
+.fd--js .fd__rv { opacity: 0; transform: translateY(16px); transition: opacity .55s cubic-bezier(0.22, 0.61, 0.36, 1), transform .55s cubic-bezier(0.22, 0.61, 0.36, 1); }
+.fd--js .fd__rv.is-in { opacity: 1; transform: none; }
+
+@media (max-width: 900px) {
+  .fd__grid { grid-template-columns: 1fr; }
+  .fd__brand { order: 2; margin-top: 40px; }
+  .fd__glyph { font-size: 70vw; }
+  .fd__cols { grid-template-columns: 1fr; max-width: 60%; }
+  .fd__art--bench { left: auto; right: 44%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fd--js .fd__line, .fd--js .fd__rv { transition: none; }
+}

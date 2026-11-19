@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orbit Words — Stock Motion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="motion.css">
+  <style>
+    html, body { margin: 0; background: #fff; font-family: "Archivo", Helvetica, Arial, sans-serif; color: #0d0d0d; }
+    .demo-pad { height: 70vh; display: grid; place-items: center; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: #888; }
+  </style>
+</head>
+<body>
+  <div class="demo-pad">Scroll ↓</div>
+
+  <!-- ====== MOTION: mulai salin dari sini ====== -->
+  <section class="ow" data-motion>
+    <div class="ow__stage">
+      <div class="ow__eyebrow"><span>A Mark</span><span class="ow__pill">That Radiates</span></div>
+      <div class="ow__object"><img src="assets/star.webp" alt=""></div>
+      <div class="ow__ring"></div>
+    </div>
+  </section>
+  <!-- ====== MOTION: sampai sini ====== -->
+
+  <div class="demo-pad">Selesai</div>
+
+  <script src="motion.js"></script>
+  <script>
+    OrbitWords.mount(document.querySelector("[data-motion]"), {
+      words: ["Clarity", "Conviction", "Collaboration", "Care"]
+    });
+  </script>
+</body>
+</html>

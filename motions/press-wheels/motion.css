@@ -1,0 +1,183 @@
+/*
+ * Press Wheels — styles
+ * Semua selector diawali .pw. Tema lewat custom property di .pw.
+ */
+.pw {
+  --pw-paper: #161616;
+  --pw-ink: #f2f1ee;
+  --pw-muted: #8a8a8a;
+  --pw-font: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --pw-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  position: relative;
+  overflow: hidden;
+  background: var(--pw-paper);
+  color: var(--pw-ink);
+  font-family: var(--pw-font);
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  outline: none;
+}
+.pw.is-grab { cursor: grabbing; }
+.pw.is-hover:not(.is-grab) { cursor: pointer; }
+.pw.is-open { cursor: zoom-out; }
+.pw *, .pw *::before, .pw *::after { box-sizing: border-box; }
+
+.pw__stage { position: absolute; inset: 0; perspective-origin: 50% 50%; }
+.pw__wheel { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; }
+
+/* ---------- kartu proyek ---------- */
+.pw__card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 6px;
+  transform-origin: 50% 50%;
+  will-change: transform, filter, opacity;
+  --hov: 0;
+}
+.pw__cardIn {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  background: #222;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, .7), 0 0 0 1px rgba(255, 255, 255, .06);
+}
+.pw__cardIn img, .pw__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s cubic-bezier(.2, .8, .2, 1); pointer-events: none; }
+.pw__video { z-index: 1; }
+/* kilau kaca yang mengikuti kursor */
+.pw__sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(60% 80% at var(--mx, 50%) var(--my, 30%), rgba(255, 255, 255, .22), rgba(255, 255, 255, 0) 60%);
+  mix-blend-mode: screen;
+  opacity: var(--hov);
+}
+/* cincin cahaya: garis tepi + kilau yang mengorbit + kilau di dekat kursor (anatomi "PS5") */
+.pw__ring {
+  position: absolute;
+  inset: -7px;
+  border-radius: 11px;
+  pointer-events: none;
+  padding: 1.5px;
+  background:
+    conic-gradient(from var(--head, 0deg), rgba(255,255,255,0) 0deg, #fff 8deg, rgba(255,255,255,0) 22deg, rgba(255,255,255,0) 360deg),
+    conic-gradient(from var(--cur, 0deg), rgba(255,255,255,0) 330deg, rgba(255,255,255,.55) 360deg),
+    linear-gradient(rgba(255,255,255,.14), rgba(255,255,255,.14));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: calc(var(--hov) * .9);
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, .35));
+}
+
+/* ---------- pelat logo (die): grafit + monogram chrome ---------- */
+.pw__plate {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,0) 40%),
+    linear-gradient(160deg, #2b2b2e, #121214 70%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.18),
+    inset 0 -2px 6px rgba(0,0,0,.6),
+    0 18px 40px -16px rgba(0,0,0,.8),
+    0 0 0 1px rgba(255,255,255,.05);
+  will-change: transform, filter, opacity;
+}
+.pw__plate::before {                                           /* tepi iridescent di dalam muka pelat */
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 10px;
+  padding: 1px;
+  background: conic-gradient(from calc(var(--seed) * 360deg), #ff9bd2, #9be7ff, #c6ff9b, #ffd59b, #ff9bd2);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: .35;
+}
+.pw__mono {
+  font: 700 calc(var(--pw-plate-font, 1) * 1em) / 1 var(--pw-font);
+  font-size: clamp(22px, 2.4vw, 42px);
+  letter-spacing: -0.04em;
+  background: linear-gradient(100deg, #6d6d73 0%, #d9d9de 18%, #ffffff calc(20% + var(--sweep, 0) * 30%), #8b8b92 52%, #f4f4f6 70%, #5c5c62 100%);
+  background-size: 200% 100%;
+  background-position: calc(var(--sweep, 0) * 100%) 0;
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,.7)) drop-shadow(0 -1px 0 rgba(255,255,255,.15));
+}
+
+/* ---------- kolom tengah ---------- */
+.pw__mid {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  pointer-events: none;
+  transition: opacity .4s ease;
+}
+.pw.is-open .pw__mid { opacity: 0; }
+.pw__eyebrow { font: 500 11px/1.2 var(--pw-mono); letter-spacing: .08em; color: var(--pw-muted); }
+.pw__title { font: 500 clamp(30px, 3.1vw, 48px)/1 var(--pw-font); letter-spacing: -0.03em; }
+.pw__chips { display: flex; gap: 6px; }
+.pw__chip { font: 500 10px/1 var(--pw-mono); letter-spacing: .06em; color: var(--pw-muted); background: rgba(255,255,255,.06); border-radius: 999px; padding: 6px 9px; }
+.pw__cta {
+  pointer-events: auto;
+  font: 500 13px/1 var(--pw-font);
+  color: var(--pw-ink);
+  background: rgba(255,255,255,.08);
+  border-radius: 6px;
+  padding: 9px 13px;
+  text-decoration: none;
+  transition: background .2s;
+}
+.pw__cta:hover { background: rgba(255,255,255,.16); }
+
+/* teks drum: tiap baris dibingkai, huruf berputar keluar-masuk */
+.pw__eyebrow, .pw__title, .pw__chip { display: inline-grid; overflow: hidden; perspective: 400px; }
+.pw__dl { grid-area: 1 / 1; white-space: nowrap; display: inline-block; }
+.pw__dc { display: inline-block; opacity: 0; transform-origin: 50% 50% -0.4em; transition: transform .55s cubic-bezier(.2, .8, .2, 1), opacity .4s ease; }
+
+/* ---------- mode buka ---------- */
+.pw__open { position: absolute; inset: 0; z-index: 70; pointer-events: none; }
+.pw__close {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  pointer-events: auto;
+  font: 500 13px/1 var(--pw-font);
+  color: var(--pw-ink);
+  background: rgba(255,255,255,.1);
+  border: 0;
+  border-radius: 6px;
+  padding: 9px 13px;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity .3s, transform .3s;
+}
+.pw.is-open .pw__close { opacity: 1; transform: none; }
+
+.pw__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pw__dc, .pw__cardIn img { transition: none; }
+}

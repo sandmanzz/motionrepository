@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Outfit Preloader — Stock Motion</title>
+  <link rel="stylesheet" href="motion.css">
+  <style>
+    html, body { margin: 0; height: 100%; }
+    body { background: #ede4dd; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+    /* "halaman" di balik loader, hanya untuk demo */
+    .demo-page {
+      position: relative; height: 100vh; min-height: 480px; overflow: hidden;
+      display: grid; place-items: center; color: #0d0d0d;
+    }
+    .demo-page h1 { margin: 0; font-size: min(9rem, 16vw); font-weight: 800; letter-spacing: -0.04em; }
+    .demo-page p { position: absolute; left: 24px; bottom: 20px; margin: 0; font-size: 14px; opacity: .6; }
+    .demo-replay {
+      position: absolute; right: 20px; bottom: 16px; z-index: 60;
+      font: inherit; font-size: 14px; padding: 8px 14px; border: 1px solid currentColor;
+      background: transparent; color: #0d0d0d; border-radius: 999px; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <main class="demo-page">
+    <h1>OUTFIT®</h1>
+    <p>Halaman terlihat setelah loader tersingkap.</p>
+    <button class="demo-replay" type="button">Replay</button>
+
+    <!-- ====== MOTION: mulai salin dari sini ====== -->
+    <div class="ol" data-motion></div>
+    <!-- ====== MOTION: sampai sini ====== -->
+  </main>
+
+  <script src="motion.js"></script>
+  <script>
+    var loader = OutfitLoader.mount(document.querySelector("[data-motion]"), {
+      word: "OUTFIT",
+      mark: "®",
+      images: [
+        "assets/look-01.webp", "assets/look-02.webp", "assets/look-03.webp",
+        "assets/look-04.webp", "assets/look-05.webp", "assets/look-06.webp"
+      ],
+      loop: true
+    });
+    document.querySelector(".demo-replay").addEventListener("click", function () { loader.replay(); });
+  </script>
+</body>
+</html>

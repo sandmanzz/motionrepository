@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Card Helix — Stock Motion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="motion.css">
+  <style>
+    html, body { margin: 0; background: #fff; color: #111; font-family: Inter, Helvetica, Arial, sans-serif; }
+    .demo { display: grid; grid-template-columns: 1fr 581px 1fr; align-items: center; min-height: 100vh; gap: 24px; padding: 0 5vw; box-sizing: border-box; }
+    .demo-left small { display: block; font-size: 13px; letter-spacing: .02em; text-transform: uppercase; color: #777; }
+    .demo-left h2 { font: 400 clamp(32px, 3.4vw, 52px)/1.02 "DM Serif Display", Georgia, serif; margin: 10px 0 14px; letter-spacing: -0.01em; }
+    .demo-left p { font-size: 17px; line-height: 1.4; color: #777; max-width: 30ch; margin: 0 0 24px; }
+    .demo-left a { display: inline-block; background: #111; color: #fff; padding: 16px 26px; font-size: 15px; text-decoration: none; }
+    .demo-helix { height: 100vh; }
+    .demo-stats { list-style: none; margin: 0; padding: 0; justify-self: end; width: min(100%, 300px); }
+    .demo-stats li { display: flex; align-items: center; gap: 14px; padding: 22px 0; border-bottom: 1px dashed #ddd; }
+    .demo-stats b { font: 400 64px/0.9 "DM Serif Display", Georgia, serif; white-space: nowrap; }
+    .demo-stats span { color: #777; font-size: 16px; line-height: 1.2; }
+    @media (max-width: 1100px) { .demo { grid-template-columns: 1fr; padding: 40px 5vw; } .demo-helix { height: 80vh; } .demo-stats { justify-self: start; } }
+  </style>
+</head>
+<body>
+  <section class="demo">
+    <div class="demo-left">
+      <small>Trusted by incredible companies</small>
+      <h2>Making good brands great with motion</h2>
+      <p>The difference between good and great is in the details. Let us make your brand great together.</p>
+      <a href="#">Book a Call</a>
+    </div>
+
+    <!-- ====== MOTION: mulai salin dari sini ====== -->
+    <div class="demo-helix" data-motion></div>
+    <!-- ====== MOTION: sampai sini ====== -->
+
+    <ul class="demo-stats">
+      <li><b>20+</b><span>Brands worked with</span></li>
+      <li><b>3m+</b><span>New customers acquired</span></li>
+      <li><b>9</b><span>Motions in this library</span></li>
+    </ul>
+  </section>
+
+  <script src="motion.js"></script>
+  <script>
+    CardHelix.mount(document.querySelector("[data-motion]"), {
+      items: [
+        { label: "Arunika", suit: "♠" }, { label: "Stride Lab", suit: "♦" }, { label: "Terraco", suit: "♣" },
+        { label: "Miko", suit: "♥" }, { label: "Lens Pavilion", suit: "♠" }, { label: "Haute Vallée", suit: "♦" }
+      ],
+      viewHeight: 900, radius: 300, cardWidth: 200, cardHeight: 280
+    });
+  </script>
+</body>
+</html>

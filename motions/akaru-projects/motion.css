@@ -1,0 +1,241 @@
+/*
+ * Akaru Projects Scroll — styles
+ * Semua selector diawali .ak. Tema lewat custom property di .ak.
+ */
+.ak {
+  --ak-bg: #f1f0ec;
+  --ak-ink: #0e0e0e;
+  --ak-accent: #e49366;
+  --ak-w: 66.667vw;                     /* lebar panel proyek (asli: 959px di layar 1440) */
+  --ak-units: 14;
+  --ak-font: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --ak-display: "Anton", "Impact", "Haettenschweiler", sans-serif;
+  --ak-ease-out: cubic-bezier(0.165, 0.84, 0.44, 1);   /* ≈ power4.out */
+
+  position: relative;
+  --ak-unit: 79vh;                      /* 1 unit timeline = 0.79 layar scroll (tempo asli) */
+  height: calc(var(--ak-units) * var(--ak-unit) + 100vh);
+  background: var(--ak-bg);
+  color: var(--ak-ink);
+  font-family: var(--ak-font);
+}
+.ak *, .ak *::before, .ak *::after { box-sizing: border-box; }
+.ak a { color: inherit; text-decoration: none; }
+.ak img { display: block; }
+
+.ak__sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+
+/* ---------- track horizontal: hero + panel ---------- */
+.ak__sticky { contain: layout paint; }
+.ak__track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+  height: 100vh;
+  width: calc(50vw + 2 * var(--ak-w) + 100vw);   /* panel terakhir berakhir tepat di x = 0 */
+  will-change: transform;
+}
+
+.ak__hero {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem 2.5vw 2.2rem;
+}
+.ak__nav { display: flex; justify-content: space-between; align-items: center; font-size: clamp(15px, 1.15vw, 20px); }
+.ak__nav a { display: flex; align-items: center; gap: 0.9em; }
+.ak__nav i { width: 0.55em; height: 0.55em; border-radius: 50%; background: var(--c, var(--ak-ink)); }
+.ak__nav a:first-child i { width: 2.4em; height: 2.4em; background: var(--ak-accent); }
+
+.ak__word {
+  margin: auto 0 0;
+  font-family: var(--ak-display);
+  font-weight: 400;
+  font-size: 17.4vw;
+  line-height: 0.8;
+  letter-spacing: -0.01em;
+  text-align: center;
+  overflow: hidden;
+  padding-top: 0.04em;
+}
+.ak__word span { display: inline-block; }
+.ak__intro { margin: 1.4rem 0 auto; text-align: center; font-size: clamp(16px, 1.45vw, 26px); line-height: 1.12; letter-spacing: -0.02em; }
+.ak__social { display: flex; justify-content: space-between; border-top: 2px solid currentColor; padding-top: 1.2rem; font-size: 12px; font-weight: 700; letter-spacing: 0.02em; }
+
+/* ---------- panel proyek ---------- */
+.ak__feat {
+  position: absolute;
+  top: 0;
+  left: calc(50vw + var(--i) * var(--ak-w));
+  width: var(--ak-w);
+  height: 100vh;
+  transform-origin: 0 0;
+  z-index: calc(1 + var(--i));
+  will-change: transform;
+}
+.ak__featIntro { position: absolute; inset: 0; }
+.ak__featBg { position: absolute; inset: 0; background: var(--c); transform-origin: 0 50%; }
+.ak__featImg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  transform-origin: 0 50%;
+}
+.ak__featImg img { width: 100%; height: 100%; object-fit: cover; }
+.ak__featContent {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: calc(var(--ak-w) * 9 / 16);
+  padding: 1.3rem 1.3rem 1.1rem;
+}
+.ak__featHead { overflow: hidden; padding: 1px; display: flex; justify-content: space-between; align-items: flex-start; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.01em; }
+.ak__featDetails { display: flex; gap: 5vw; }
+.ak__featDetails span:last-child { max-width: 22ch; }
+.ak__pill { border: 1px solid currentColor; border-radius: 999px; padding: 0.35em 0.9em; }
+.ak__featTitle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 42%;
+  transform: translateY(-50%);
+  text-align: center;
+  font-size: 6.67vw;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  overflow: hidden;
+  padding: 0.04em 0 0.12em;
+}
+.ak__featTitle span { display: inline-block; }
+.ak__featIndex { position: absolute; left: 1.3rem; bottom: 1.1rem; font-size: 11px; font-weight: 700; }
+.ak__featBtn {
+  position: absolute;
+  right: 1.3rem;
+  bottom: 1.1rem;
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  display: grid;
+  place-items: center;
+  font-size: 1.1rem;
+}
+
+/* isi panel muncul saat panel sudah ke kiri (≈ power3.out, stagger) */
+.ak__featHead > *, .ak__featTitle span { transform: translateY(110%); transition: transform .7s cubic-bezier(0.215, 0.61, 0.355, 1); }
+.ak__featHead > :nth-child(2) { transition-delay: .1s; }
+.ak__featTitle span { transition-delay: .15s; }
+.ak__featBtn { transform: scale(0); transition: transform .6s cubic-bezier(0.215, 0.61, 0.355, 1) .2s; }
+.ak__feat.is-shown .ak__featHead > *, .ak__feat.is-shown .ak__featTitle span { transform: none; }
+.ak__feat.is-shown .ak__featBtn { transform: none; }
+/* panel ke-3: detail & tombol juga digeser JS; tombol pakai wrapper scale terpisah */
+.ak__feat:last-child .ak__featBtn,
+.ak__feat:last-child .ak__featDetails { transform: none; transition: none; }
+
+/* ---------- daftar proyek (jadi kolom kiri) ---------- */
+.ak__list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--ak-w);
+  padding-top: 100vh;              /* mulai tepat di bawah panel terakhir */
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.ak__card { display: block; position: relative; height: calc(var(--ak-w) * 0.78); overflow: hidden; }
+.ak__cardInner { position: absolute; inset: 0; overflow: hidden; }
+.ak__card img { position: absolute; left: 0; top: -6.25vw; width: 100%; height: calc(100% + 12.5vw); object-fit: cover; } /* ±9rem asli (1rem = 1/144 lebar) */
+.ak__cardMeta { position: absolute; inset: 1.6rem 1.6rem auto; display: flex; justify-content: space-between; align-items: center; color: #fff; font-size: 22px; font-weight: 700; text-transform: uppercase; }
+.ak__cardMeta .ak__pill { font-size: 20px; }
+.ak__cardTitle { position: absolute; left: 1.6rem; bottom: 1.6rem; color: #fff; font-size: 5.4rem; letter-spacing: -0.04em; line-height: 1; }
+.ak__cardBtn { position: absolute; right: 1.6rem; bottom: 1.6rem; width: 7rem; height: 7rem; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 2.4rem; }
+
+/* ---------- panel kanan: judul + keahlian ---------- */
+.ak__desc {
+  position: absolute;
+  left: 36vw;
+  right: 2.6vw;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+.ak__desc.is-in { pointer-events: auto; }
+.ak__descTitle {
+  margin: 6vh 0 0;
+  font-weight: 400;
+  font-size: 7.6vw;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+}
+.ak__descTitle span { display: inline-block; }
+.ak__skills { list-style: none; margin: 5vh 0 0 auto; padding: 0; width: 40%; }
+.ak__skill { position: relative; display: flex; justify-content: space-between; align-items: flex-end; padding: 1rem 0 0.9rem; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+.ak__skill > span { overflow: hidden; display: block; }
+.ak__skill b { display: block; font-weight: inherit; }
+.ak__skill .--text b { text-align: right; max-width: 26ch; }
+.ak__skillLine { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: 100% 100%; }
+.ak__descText { position: absolute; left: 0; right: 4vw; bottom: 6vh; margin: 0; font-size: clamp(20px, 2.6vw, 44px); line-height: 1.12; letter-spacing: -0.03em; text-indent: 0; }
+.ak__descText span { display: inline-block; }
+
+/* muncul (power3.out) / hilang cepat (power1.inOut .3s) */
+.ak__descTitle span, .ak__skill b, .ak__descText span {
+  transform: translateY(200%);
+  transition: transform .3s cubic-bezier(0.45, 0, 0.55, 1);
+}
+.ak__desc.is-in .ak__descTitle span, .ak__desc.is-in .ak__skill b, .ak__desc.is-in .ak__descText span {
+  transform: none;
+  transition: transform .8s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition-delay: calc(var(--d, 0) * 1s);
+}
+.ak__descText span { opacity: 0; transition-property: transform, opacity; }
+.ak__desc.is-in .ak__descText span { opacity: 1; transition-property: transform, opacity; }
+
+/* ---------- intro saat load ---------- */
+.ak--intro .ak__featIntro { transform: translateX(50vw); }
+.ak--intro .ak__featIndex { transform: translateY(80vw); }
+.ak--intro .ak__featImg img { opacity: 0; }
+.ak--intro .ak__word span { transform: translateY(105%); }
+.ak--in .ak__featIntro, .ak--in .ak__featIndex {
+  transform: none;
+  transition: transform 1.2s var(--ak-ease-out) calc(.58s + var(--i) * .02s);
+}
+.ak--in .ak__featImg img { opacity: 1; transition: opacity .6s ease calc(.4s + var(--i) * .05s); }
+.ak--in .ak__word span { transform: none; transition: transform 1.1s var(--ak-ease-out) calc(.1s + var(--j, 0) * .05s); }
+
+/* ---------- layar kecil: statis bertumpuk ---------- */
+.ak--static { height: auto; }
+.ak--static .ak__sticky { position: relative; height: auto; overflow: visible; }
+.ak--static .ak__track, .ak--static .ak__list, .ak--static .ak__desc, .ak--static .ak__hero, .ak--static .ak__feat { position: relative; inset: auto; left: auto; width: 100%; height: auto; transform: none !important; }
+.ak--static .ak__track { display: flex; flex-direction: column; }
+.ak--static .ak__hero { min-height: 90vh; }
+.ak--static .ak__word { font-size: 30vw; }
+.ak--static .ak__feat { height: auto; }
+.ak--static .ak__featIntro, .ak--static .ak__featBg, .ak--static .ak__featImg, .ak--static .ak__featContent { position: relative; inset: auto; transform: none !important; }
+.ak--static .ak__featBg { position: absolute; inset: 0; }
+.ak--static .ak__featContent { min-height: 40vw; }
+.ak--static .ak__featImg img { transform: none !important; }
+.ak--static .ak__featTitle { font-size: 12vw; }
+.ak--static .ak__feat .ak__featHead > *, .ak--static .ak__featTitle span, .ak--static .ak__featBtn, .ak--static .ak__desc * { transform: none !important; }
+.ak--static .ak__list { padding-top: 0; }
+.ak--static .ak__card { height: 78vw; }
+.ak--static .ak__card img { transform: none !important; top: 0; height: 100%; }
+.ak--static .ak__cardTitle { font-size: 10vw; }
+.ak--static .ak__cardMeta, .ak--static .ak__cardMeta .ak__pill { font-size: 12px; }
+.ak--static .ak__cardBtn { width: 3rem; height: 3rem; font-size: 1.1rem; }
+.ak--static .ak__desc { padding: 10vw 4vw; }
+.ak--static .ak__descTitle { font-size: 16vw; }
+.ak--static .ak__skills { width: 100%; }
+.ak--static .ak__descText { position: static; margin-top: 8vw; font-size: 6vw; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ak * { transition-duration: 0s !important; transition-delay: 0s !important; }
+}

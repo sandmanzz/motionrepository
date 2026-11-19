@@ -1,0 +1,44 @@
+/*
+ * Ink Comic — styles
+ * Semua selector diawali .ic. Section setinggi 280vh dengan stage sticky layar penuh.
+ */
+.ic {
+  --ic-ink: #141414;
+  --ic-paper: #f2f1ee;
+  --ic-font: "Archivo Narrow", "Arial Narrow", "Helvetica Neue", sans-serif;
+
+  position: relative;
+  height: 280vh;
+  background: var(--ic-paper);
+  color: var(--ic-ink);
+}
+.ic *, .ic *::before, .ic *::after { box-sizing: border-box; }
+.ic__stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+.ic__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* kotak narasi gaya komik */
+.ic__caption {
+  position: absolute;
+  left: 7vw;
+  bottom: 10vh;
+  max-width: min(34vw, 460px);
+  padding: 1.6vw 2vw;
+  background: var(--ic-paper);
+  border: 2.5px solid var(--ic-ink);
+  font-family: var(--ic-font);
+  font-weight: 500;
+  font-size: clamp(12px, 1.05vw, 17px);
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  opacity: 0;
+  transform-origin: 0 100%;
+  transition: opacity .2s steps(2);
+  will-change: transform;
+}
+.ic__caption p { margin: 0; }
+
+.ic--nogl .ic__stage { background: var(--ic-paper); }
+
+@media (max-width: 767px) {
+  .ic__caption { left: 5vw; right: 5vw; max-width: none; padding: 4vw; font-size: 13px; }
+}

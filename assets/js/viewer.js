@@ -37,6 +37,17 @@
   frame.appendChild(iframe);
   root.appendChild(frame);
 
+  // Motion berbasis scroll/sticky (registry: frame: "viewport") butuh viewport asli di dalam iframe:
+  // frame setinggi layar dan demo di-scroll di dalamnya. Kalau tidak, 100vh di dalam iframe ikut membesar tanpa henti.
+  if (m.frame === "viewport") {
+    frame.classList.add("viewer__frame--viewport");
+  } else {
+    iframe.addEventListener("load", function () {
+      fit();
+      try { new ResizeObserver(fit).observe(iframe.contentDocument.body); } catch (e) {}
+    });
+  }
+
   // Samakan tinggi frame dengan tinggi demo supaya tidak ada scroll di dalam scroll.
   // Di file:// akses ke dokumen iframe diblokir -> tinggi default dari CSS tetap dipakai.
   function fit() {
@@ -45,10 +56,6 @@
       if (h > 0) frame.style.height = h + "px";
     } catch (e) { /* cross-origin (file://) */ }
   }
-  iframe.addEventListener("load", function () {
-    fit();
-    try { new ResizeObserver(fit).observe(iframe.contentDocument.body); } catch (e) {}
-  });
 
   var info = el("div", "viewer__info");
 

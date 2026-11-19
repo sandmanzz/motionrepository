@@ -1,0 +1,94 @@
+/*
+ * Orbit Words — styles
+ * Semua selector diawali .ow. Tema & posisi jangkar lewat custom property di .ow.
+ */
+.ow {
+  --ow-bg: #ffffff;
+  --ow-ink: #0d0d0d;
+  --ow-muted: #5c5c5c;
+  --ow-height: 420vh;                 /* panjang scroll section */
+  --ow-object: min(38vw, 52vh);       /* tinggi objek tengah */
+  --ow-font: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --ow-word-size: clamp(15px, 1.35vw, 19px);
+
+  /* posisi jangkar (desktop ≥1280, dari situs aslinya) */
+  --ow-top-y: 15%;
+  --ow-bottom-y: 78%;
+  --ow-side-y: 41%;
+  --ow-right-x: 65%;
+  --ow-left-x: 35%;
+
+  position: relative;
+  height: var(--ow-height);
+  background: var(--ow-bg);
+  color: var(--ow-ink);
+  font-family: var(--ow-font);
+}
+.ow *, .ow *::before, .ow *::after { box-sizing: border-box; }
+
+.ow__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  perspective: 1200px;
+}
+
+.ow__eyebrow {
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  font-weight: 700;
+  font-size: clamp(11px, 1vw, 14px);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ow-muted);
+  white-space: nowrap;
+}
+.ow__pill { border: 1px solid rgba(92, 92, 92, 0.4); border-radius: 8px; padding: 3px 10px; }
+
+.ow__object {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  height: var(--ow-object);
+  transform: translate(-50%, -50%);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.ow__object > * { display: block; height: 100%; width: auto; }
+
+.ow__ring {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+}
+.ow__anchor { position: absolute; }
+.ow__anchor--top    { top: var(--ow-top-y);    left: 50%;                 transform: translate(-50%, 0); }
+.ow__anchor--right  { top: var(--ow-side-y);   left: var(--ow-right-x);   transform: translate(0, -50%); }
+.ow__anchor--bottom { top: var(--ow-bottom-y); left: 50%;                 transform: translate(-50%, 0); }
+.ow__anchor--left   { top: var(--ow-side-y);   left: var(--ow-left-x);    transform: translate(-100%, -50%); }
+
+.ow__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.ow__dot { width: 8px; height: 8px; border-radius: 2px; background: var(--ow-ink); flex-shrink: 0; }
+.ow__word { font-size: var(--ow-word-size); font-weight: 500; white-space: nowrap; }
+
+@media (max-width: 1279px) and (min-width: 1024px) {
+  .ow { --ow-top-y: 10%; --ow-bottom-y: 60%; --ow-side-y: 29%; --ow-right-x: 72%; --ow-left-x: 28%; }
+}
+@media (max-width: 1023px) {
+  .ow { --ow-top-y: 25%; --ow-bottom-y: 72%; --ow-side-y: 44%; --ow-right-x: 77%; --ow-left-x: 22%; --ow-word-size: 14px; --ow-object: min(48vw, 40vh); }
+  .ow__dot { display: none; }
+  .ow__eyebrow { top: 11%; }
+}
