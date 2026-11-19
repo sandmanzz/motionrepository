@@ -1,0 +1,158 @@
+/*
+ * Particle Relief Hero — styles
+ * Semua selector diawali .ph. Tema lewat custom property di .ph.
+ */
+.ph {
+  --ph-bg: #070a1a;
+  --ph-bg-glow: #171c3d;                 /* tengah gradien */
+  --ph-ink: #f4eadb;                     /* wordmark & teks */
+  --ph-gold: #e2bd6e;
+  --ph-serif: "Bodoni Moda", "Bodoni 72", Didot, "Playfair Display", Georgia, serif;
+  --ph-sans: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --ph-pad: clamp(20px, 4vw, 64px);
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background:
+    radial-gradient(ellipse 75% 65% at 50% 48%, var(--ph-bg-glow) 0%, transparent 70%),
+    var(--ph-bg);
+  color: var(--ph-ink);
+  font-family: var(--ph-sans);
+  touch-action: pan-y;
+}
+.ph *, .ph *::before, .ph *::after { box-sizing: border-box; }
+
+/* ---------- canvas & fallback ---------- */
+.ph__canvas,
+.ph__fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+.ph__canvas { display: block; opacity: 0; transition: opacity 0.6s ease; }
+.ph.is-ready .ph__canvas { opacity: 1; }
+.ph__fallback {            /* tampil hanya jika WebGL / pembacaan gambar gagal */
+  display: none;
+  object-fit: contain;
+  padding: 12vh 6vw;
+  mix-blend-mode: screen;
+  opacity: 0.85;
+}
+.ph.is-fallback .ph__fallback { display: block; }
+.ph.is-fallback .ph__canvas { display: none; }
+
+/* vignette di atas partikel, di bawah teks */
+.ph::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse 90% 80% at 50% 50%, transparent 55%, var(--ph-bg) 100%);
+}
+
+/* ---------- nav ---------- */
+.ph__nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: clamp(20px, 3.4vw, 56px);
+  padding: clamp(18px, 2.6vw, 40px) var(--ph-pad) 0;
+  font-size: clamp(11px, 0.82vw, 13px);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+.ph__nav a {
+  position: relative;
+  padding: 8px 0;
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease, letter-spacing 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ph__nav a::after {            /* garis emas menyapu dari kiri, keluar ke kanan */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0.34em;
+  bottom: 2px;
+  height: 1px;
+  background: var(--ph-gold);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ph__nav a:hover,
+.ph__nav a:focus-visible { color: var(--ph-gold); }
+.ph__nav a:hover::after,
+.ph__nav a:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+.ph__nav a:focus-visible { outline: 1px solid var(--ph-gold); outline-offset: 6px; }
+
+/* ---------- copy ---------- */
+.ph__copy {
+  align-self: center;
+  display: grid;
+  justify-items: center;
+  gap: clamp(10px, 2.2vw, 30px);
+  padding: 0 var(--ph-pad);
+  text-align: center;
+  pointer-events: none;          /* hover tetap sampai ke partikel di belakang teks */
+}
+.ph__eyebrow,
+.ph__hint {
+  margin: 0;
+  font-size: clamp(10px, 0.82vw, 13px);
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  text-transform: uppercase;
+}
+.ph__title {
+  margin: 0;
+  font-family: var(--ph-serif);
+  font-weight: 400;
+  font-size: clamp(84px, 21vw, 340px);
+  line-height: 0.82;
+  letter-spacing: -0.012em;
+  font-optical-sizing: auto;
+}
+.ph__sub {
+  margin: 0;
+  font-family: var(--ph-serif);
+  font-style: italic;
+  font-size: clamp(18px, 1.9vw, 30px);
+  color: var(--ph-gold);
+}
+.ph__hint {
+  justify-self: center;
+  padding: 0 var(--ph-pad) clamp(22px, 3vw, 44px);
+  opacity: 0.7;
+}
+
+/* masuk bertahap setelah partikel terbentuk (.is-formed dipasang oleh JS) */
+.ph__nav, .ph__eyebrow, .ph__title, .ph__sub, .ph__hint {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 1.1s ease, transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ph__nav { transform: none; }
+.ph.is-formed .ph__nav,
+.ph.is-formed .ph__eyebrow,
+.ph.is-formed .ph__title,
+.ph.is-formed .ph__sub { opacity: 1; transform: none; }
+.ph.is-formed .ph__hint { opacity: 0.7; transform: none; }
+.ph.is-formed .ph__title { transition-delay: 0.12s; }
+.ph.is-formed .ph__sub { transition-delay: 0.32s; }
+.ph.is-formed .ph__hint { transition-delay: 0.6s; }
+
+@media (max-width: 560px) {
+  .ph__nav { justify-content: center; letter-spacing: 0.24em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ph__canvas, .ph__nav, .ph__nav a, .ph__nav a::after,
+  .ph__eyebrow, .ph__title, .ph__sub, .ph__hint { transition: none; transform: none; }
+}

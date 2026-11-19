@@ -1,0 +1,532 @@
+/* Arunika — landing page wahana. Semua konten hidup di .stage (fixed); .track hanya memberi panjang scroll. */
+:root {
+  --red: #d8321f;
+  --red-deep: #a81f12;
+  --sun: #f6c343;
+  --cream: #fff4df;
+  --ink: #1b1420;
+  --display: "Bowlby One", "Arial Black", Impact, sans-serif;
+  --body: "Figtree", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --pad: clamp(16px, 3vw, 44px);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+body.is-gated { overflow: hidden; }
+button { font: inherit; color: inherit; cursor: pointer; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; }
+
+.track { width: 1px; }               /* tinggi diatur JS */
+
+/* ================= stage ================= */
+.stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--ink) url("../media/poster-station.jpg") center / cover no-repeat;
+}
+.media, .media video, .flash, .shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.media video {
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+}
+.media video.is-active { opacity: 1; }
+.media { transform-origin: 50% 62%; will-change: transform; }   /* digetarkan & di-zoom oleh JS mengikuti kecepatan */
+.tunnel {                                  /* pandangan menyempit saat kencang */
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 62% 58% at 50% 46%, transparent 38%, rgba(8, 4, 12, 0.55) 72%, rgba(8, 4, 12, 0.94) 100%);
+  will-change: opacity;
+}
+.flash { opacity: 0; background: #120a1a; pointer-events: none; will-change: opacity; }   /* hanya untuk lompatan lewat rail */
+.shade {                                   /* menjaga teks terbaca di atas video terang */
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(20, 12, 24, 0.5) 0%, transparent 22%),
+    linear-gradient(to top, rgba(20, 12, 24, 0.35) 0%, transparent 30%);
+}
+
+/* ================= top bar ================= */
+.top {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: clamp(12px, 1.6vw, 22px) var(--pad);
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--display);
+  font-size: clamp(18px, 1.7vw, 24px);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+.brand__sun { width: 26px; height: 26px; fill: var(--sun); stroke: var(--sun); }
+.top__actions { display: flex; align-items: center; gap: 8px; }
+.pill {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.25s var(--ease), background-color 0.2s ease;
+}
+.pill:hover { transform: translateY(-2px); background: var(--sun); }
+.pill--ghost {
+  background: rgba(27, 20, 32, 0.42);
+  color: var(--cream);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 0 1px rgba(255, 244, 223, 0.28);
+  font-weight: 600;
+}
+.pill--ghost:hover { background: rgba(27, 20, 32, 0.7); }
+
+/* ================= HUD ================= */
+.hud {
+  position: absolute;
+  left: var(--pad);
+  bottom: clamp(16px, 2.4vw, 32px);
+  z-index: 20;
+  display: grid;
+  gap: 2px;
+  font-family: var(--mono);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+  transition: opacity 0.5s ease;
+}
+.is-gated .hud, .is-gated .rail, .is-ended .hud { opacity: 0; }
+.hud__speed { display: flex; align-items: baseline; gap: 8px; }
+.hud__speed span {
+  font-family: var(--display);
+  font-size: clamp(40px, 5.2vw, 76px);
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  min-width: 2ch;
+}
+.hud__speed small { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+.hud__speed span { transition: color 0.3s ease; }
+.is-fast .hud__speed span { color: #ff5a3c; }
+.is-riding .top, .is-riding .rail { opacity: 0; pointer-events: none; }      /* saat jatuh, tidak ada yang lain di layar */
+.top { transition: opacity 0.4s ease; }
+.hud__zone { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sun); }
+
+/* ================= rail (peta lintasan) ================= */
+.rail {
+  position: absolute;
+  right: var(--pad);
+  top: 50%;
+  z-index: 25;
+  display: grid;
+  gap: 18px;
+  padding: 8px 0;
+  transform: translateY(-50%);
+  transition: opacity 0.5s ease;
+}
+.rail::before {
+  content: "";
+  position: absolute;
+  right: 5px;
+  top: 14px;
+  bottom: 14px;
+  width: 2px;
+  background: rgba(255, 244, 223, 0.35);
+}
+.rail button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 12px;
+  padding: 0 22px 0 0;
+  border: 0;
+  background: none;
+}
+.rail button::before {           /* area sentuh 44px */
+  content: "";
+  position: absolute;
+  right: -16px;
+  top: -16px;
+  width: 44px;
+  height: 44px;
+}
+.rail button::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: inset 0 0 0 2px var(--cream);
+  transition: background-color 0.2s ease, transform 0.25s var(--ease);
+}
+.rail button.is-passed::after { background: var(--cream); }
+.rail button:hover::after { transform: scale(1.35); background: var(--sun); }
+.rail span {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity 0.2s ease, transform 0.25s var(--ease);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+.rail button:hover span, .rail button:focus-visible span, .rail button.is-here span { opacity: 1; transform: none; }
+.rail__car {
+  position: absolute;
+  right: 1px;
+  top: 14px;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--red);
+  box-shadow: 0 0 0 2px var(--sun);
+  transform: translateY(calc(var(--y, 0) * 1px - 5px));
+  pointer-events: none;
+}
+
+/* ================= gerbang ================= */
+.gate {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: clamp(10px, 1.6vw, 20px);
+  padding: 80px var(--pad) 22vh;
+  text-align: center;
+  background: radial-gradient(ellipse 70% 60% at 50% 42%, rgba(27, 20, 32, 0.55), transparent 75%);
+  transition: opacity 0.7s ease, transform 0.9s var(--ease), visibility 0s linear 0.9s;
+}
+body:not(.is-gated) .gate { opacity: 0; transform: translateY(-6vh) scale(1.04); visibility: hidden; pointer-events: none; }
+.eyebrow {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sun);
+}
+.gate__title {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(64px, 15vw, 230px);
+  line-height: 0.86;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  text-shadow: 0 6px 0 var(--red), 0 18px 50px rgba(0, 0, 0, 0.45);
+}
+.gate__lede { margin: 0; max-width: 34ch; font-size: clamp(17px, 1.5vw, 21px); font-weight: 500; text-wrap: balance; }
+.start {
+  margin-top: 8px;
+  min-width: 220px;
+  height: 64px;
+  padding: 0 34px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--red);
+  color: var(--cream);
+  font-family: var(--display);
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 6px 0 var(--red-deep), 0 18px 40px rgba(0, 0, 0, 0.4);
+  transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease), background-color 0.2s ease;
+}
+.start:not(:disabled):hover { transform: translateY(-3px); box-shadow: 0 9px 0 var(--red-deep), 0 24px 46px rgba(0, 0, 0, 0.45); }
+.start:not(:disabled):active { transform: translateY(5px); box-shadow: 0 1px 0 var(--red-deep), 0 8px 18px rgba(0, 0, 0, 0.4); }
+.start:disabled { background: rgba(27, 20, 32, 0.6); box-shadow: inset 0 0 0 1px rgba(255, 244, 223, 0.3); font-family: var(--mono); font-size: 13px; letter-spacing: 0.08em; cursor: progress; }
+.gate__note { margin: 0; font-size: 14px; opacity: 0.85; }
+
+/* ================= kalimat tanjakan ================= */
+.line, .crest, .sign, .end { opacity: 0; visibility: hidden; }     /* JS mengatur opacity & --t */
+.line {
+  position: absolute;
+  left: 50%;
+  top: 24%;
+  z-index: 10;
+  width: min(92vw, 20ch);
+  margin: 0;
+  transform: translate(-50%, calc((0.5 - var(--t, 0.5)) * 8vh));
+  font-family: var(--display);
+  font-size: clamp(30px, 5.4vw, 80px);
+  line-height: 1;
+  text-align: center;
+  text-wrap: balance;
+  text-shadow: 0 4px 0 rgba(27, 20, 32, 0.55), 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+.scrollhint {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(20px, 4vw, 44px);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.scrollhint.is-on { opacity: 1; }
+.scrollhint i {
+  width: 22px;
+  height: 34px;
+  border: 2px solid var(--cream);
+  border-radius: 12px;
+  position: relative;
+}
+.scrollhint i::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  width: 4px;
+  height: 7px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: var(--sun);
+  animation: wheel 1.4s var(--ease) infinite;
+}
+@keyframes wheel { 0% { transform: translateY(0); opacity: 1; } 80%, 100% { transform: translateY(12px); opacity: 0; } }
+
+/* ================= puncak ================= */
+.crest { position: absolute; inset: 0; z-index: 10; }
+.crest__hold {
+  position: absolute;
+  left: 50%;
+  top: 13%;
+  margin: 0;
+  transform: translateX(-50%);
+  font-family: var(--display);
+  font-size: clamp(34px, 6vw, 92px);
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: 0 4px 0 rgba(27, 20, 32, 0.55), 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+.crest__map { margin: 0; padding: 0; list-style: none; }
+.crest__map li { position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%); }
+.crest__map button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px 0 6px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 15px;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  transition: transform 0.25s var(--ease), background-color 0.2s ease;
+}
+.crest__map button:hover { transform: translateY(-3px) scale(1.04); background: var(--sun); }
+.crest__map b {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--red);
+  color: var(--cream);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+}
+.crest__warn {
+  position: absolute;
+  left: 50%;
+  bottom: 30%;
+  margin: 0;
+  transform: translateX(-50%);
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--red);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ================= papan area ================= */
+.sign {
+  position: absolute;
+  left: var(--pad);
+  top: 50%;
+  z-index: 10;
+  width: min(420px, calc(100vw - var(--pad) * 2 - 40px));
+  padding: 26px 26px 22px;
+  border-radius: 6px 6px 18px 18px;
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  transform: translateY(calc(-50% + (0.5 - var(--t, 0.5)) * 10vh)) rotate(calc((var(--t, 0.5) - 0.5) * -3deg));
+  transform-origin: 50% -40px;
+}
+.sign::before {                    /* tenda bergaris seperti atap stasiun */
+  content: "";
+  position: absolute;
+  inset: -14px -6px auto -6px;
+  height: 22px;
+  border-radius: 6px 6px 0 0;
+  background: repeating-linear-gradient(90deg, var(--accent, var(--red)) 0 22px, var(--cream) 22px 44px);
+  box-shadow: 0 4px 0 rgba(27, 20, 32, 0.18);
+}
+.sign--tirta { --accent: #1794a8; }
+.sign--guntur { --accent: #d8321f; left: auto; right: calc(var(--pad) + 44px); }
+.sign--pasar { --accent: #4a2f8f; }
+.sign__no { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+.sign h2 { margin: 6px 0 8px; font-family: var(--display); font-weight: 400; font-size: clamp(38px, 4.6vw, 60px); line-height: 0.95; }
+.sign p { margin: 0 0 14px; }
+.sign ul { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.sign li {
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ================= stasiun akhir ================= */
+.end {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: clamp(10px, 1.5vw, 18px);
+  padding: 90px var(--pad) 40px;
+  text-align: center;
+  background: radial-gradient(ellipse 80% 70% at 50% 50%, rgba(18, 10, 26, 0.78), rgba(18, 10, 26, 0.35) 80%);
+}
+.end > * { transform: translateY(calc((1 - var(--t, 1)) * 30px)); }
+.end__title {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(44px, 8.4vw, 124px);
+  line-height: 0.92;
+  text-shadow: 0 5px 0 var(--red);
+}
+.end__lede { margin: 0; max-width: 46ch; font-size: clamp(16px, 1.4vw, 20px); text-wrap: pretty; }
+.end__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 8px; }
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 190px;
+  height: 60px;
+  padding: 0 30px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--sun);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 19px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 6px 0 #b8861a, 0 16px 36px rgba(0, 0, 0, 0.4);
+  transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+.cta:hover { transform: translateY(-3px); box-shadow: 0 9px 0 #b8861a, 0 22px 42px rgba(0, 0, 0, 0.45); }
+.cta:active { transform: translateY(5px); box-shadow: 0 1px 0 #b8861a; }
+.cta--ghost { background: transparent; color: var(--cream); box-shadow: inset 0 0 0 2px var(--cream); }
+.cta--ghost:hover { box-shadow: inset 0 0 0 2px var(--sun); color: var(--sun); }
+.cta--ghost:active { box-shadow: inset 0 0 0 2px var(--sun); }
+.end__facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 28px;
+  margin: 14px 0 0;
+  font-size: 14px;
+}
+.end__facts div { display: flex; gap: 8px; }
+.end__facts dt { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sun); align-self: center; }
+.end__facts dd { margin: 0; }
+
+/* ================= responsif ================= */
+@media (max-width: 760px) {
+  .top__actions .pill--ghost[data-jump] { display: none; }      /* "Lewati wahana" pindah ke rail */
+  .pill { height: 40px; padding: 0 13px; font-size: 13px; }
+  .rail { gap: 14px; }
+  .rail span { display: none; }
+  .hud__speed span { font-size: 40px; }
+  .sign, .sign--guntur, .sign--pasar {
+    left: var(--pad);
+    right: auto;
+    top: auto;
+    bottom: 92px;
+    width: calc(100vw - var(--pad) * 2 - 30px);
+    padding: 22px 18px 16px;
+    transform: translateY(calc((0.5 - var(--t, 0.5)) * 6vh));
+  }
+  .sign p { font-size: 15px; margin-bottom: 10px; }
+  /* di layar tegak video terpotong, jadi label tidak bisa menempel ke pemandangan: jadikan daftar */
+  .crest__map {
+    position: absolute;
+    left: var(--pad);
+    right: calc(var(--pad) + 30px);
+    top: 27%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  .crest__map li { position: static; transform: none; }
+  .crest__map button { height: 44px; font-size: 14px; padding-right: 14px; }
+  .crest__map b { width: 28px; height: 28px; }
+  .crest__warn { bottom: 24%; }
+  .line { top: 20%; }
+  .gate { padding-bottom: 16vh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gate, .pill, .start, .cta, .rail span, .rail button::after { transition: none; }
+  .scrollhint i::after { animation: none; }
+  .line, .sign, .end > * { transform: translate(-50%, 0); }
+  .sign, .end > * { transform: translateY(-50%); }
+  .end > * { transform: none; }
+}

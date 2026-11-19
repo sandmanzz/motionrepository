@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product Swap Conveyor — Stock Motion</title>
+  <link rel="stylesheet" href="motion.css">
+  <style>
+    /* hanya untuk halaman demo ini, bukan bagian dari motion */
+    html, body { margin: 0; min-height: 100%; background: #fff; }
+  </style>
+</head>
+<body>
+
+  <!-- ====== MOTION: mulai salin dari sini ====== -->
+  <section class="ps" data-product-swap aria-label="Product swap">
+    <h2 class="ps__title">Pick a piece.<br>See it worn.</h2>
+
+    <div class="ps__stage" data-ps-stage>
+      <div class="ps__track" data-ps-track></div>
+      <div class="ps__model" data-ps-model></div>
+    </div>
+
+    <div class="ps__controls" data-ps-controls role="group" aria-label="Choose a product"></div>
+  </section>
+  <!-- ====== MOTION: sampai sini ====== -->
+
+  <script src="motion.js"></script>
+  <script>
+    ProductSwap.mount(document.querySelector("[data-product-swap]"), {
+      base: "assets/model/base.webp",
+      products: [
+        { key: "cap",        label: "Cap",     image: "assets/products/cap.webp",        worn: "assets/model/cap.webp" },
+        { key: "headphones", label: "Audio",   image: "assets/products/headphones.webp", worn: "assets/model/headphones.webp" },
+        { key: "sunglasses", label: "Eyewear", image: "assets/products/sunglasses.webp", worn: "assets/model/sunglasses.webp" },
+        { key: "watch",      label: "Watch",   image: "assets/products/watch.webp",      worn: "assets/model/watch.webp" },
+        { key: "bag",        label: "Bag",     image: "assets/products/bag.webp",        worn: "assets/model/bag.webp" },
+        { key: "scarf",      label: "Scarf",   image: "assets/products/scarf.webp",      worn: "assets/model/scarf.webp" }
+      ]
+    });
+  </script>
+</body>
+</html>

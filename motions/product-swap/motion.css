@@ -1,0 +1,166 @@
+/*
+ * Product Swap Conveyor — styles
+ * Semua selector diawali .ps supaya aman ditempel ke project lain.
+ * Tema diatur lewat custom property di .ps.
+ */
+.ps {
+  --ps-bg: #ffffff;
+  --ps-ink: #0d0d0d;
+  --ps-muted: rgba(13, 13, 13, 0.55);
+  --ps-line: rgba(13, 13, 13, 0.14);
+  --ps-accent: #1f3fff;
+  --ps-card-bg: #ffffff;
+  --ps-card: clamp(104px, 11.4vw, 168px);   /* lebar kartu, dibaca juga oleh JS */
+  --ps-gap: clamp(16px, 1.6vw, 32px);       /* jarak minimum antar kartu */
+  --ps-fade: 250ms;                         /* durasi crossfade model */
+  --ps-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --ps-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  position: relative;
+  overflow: hidden;
+  background: var(--ps-bg);
+  color: var(--ps-ink);
+  font-family: var(--ps-font);
+  padding-top: clamp(40px, 6vw, 88px);
+}
+
+.ps *,
+.ps *::before,
+.ps *::after { box-sizing: border-box; }
+
+.ps__title {
+  margin: 0 0 clamp(28px, 4.5vw, 64px);
+  padding: 0 16px;
+  text-align: center;
+  font-weight: 800;
+  font-size: clamp(30px, 5.4vw, 64px);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+/* ---------- stage ---------- */
+.ps__stage {
+  position: relative;
+  height: clamp(400px, 50vw, 660px);
+}
+
+.ps__track {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.ps.is-ready .ps__track { opacity: 1; }
+
+.ps__card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--ps-card);
+  height: calc(var(--ps-card) * 1.09);
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: clamp(8px, 1vw, 14px);
+  background: var(--ps-card-bg);
+  border: 1px solid var(--ps-line);
+  border-radius: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  will-change: transform;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.ps__card:hover { border-color: var(--ps-ink); }
+.ps__card.is-active {
+  border-color: var(--ps-accent);
+  box-shadow: inset 0 0 0 1px var(--ps-accent);
+}
+
+.ps__card-img {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+.ps__card-label {
+  flex-shrink: 0;
+  margin-top: clamp(5px, 0.6vw, 9px);
+  text-align: center;
+  white-space: nowrap;
+  font-family: var(--ps-mono);
+  font-weight: 500;
+  font-size: clamp(9px, 0.85vw, 13px);
+}
+.ps__card.is-active .ps__card-label { color: var(--ps-accent); }
+
+/* ---------- model ---------- */
+.ps__model {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: 104%;
+  aspect-ratio: var(--ps-model-ratio, 688 / 1024);
+  transform: translateX(-50%);
+  z-index: 500;              /* selalu di depan kartu */
+  pointer-events: none;
+}
+.ps__layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  opacity: 0;
+  transition: opacity var(--ps-fade) ease-out;
+  user-select: none;
+}
+.ps__layer.is-on { opacity: 1; }
+.ps__layer.is-top { z-index: 2; }
+
+/* ---------- controls ---------- */
+.ps__controls {
+  position: relative;
+  z-index: 600;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 16px 18px;
+  border-top: 1px solid var(--ps-line);
+  background: var(--ps-bg);
+}
+.ps__chip {
+  appearance: none;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--ps-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ps-ink);
+  font-family: var(--ps-mono);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.ps__chip:hover { border-color: var(--ps-ink); }
+.ps__chip[aria-pressed="true"] {
+  background: var(--ps-ink);
+  border-color: var(--ps-ink);
+  color: var(--ps-bg);
+}
+.ps__chip:focus-visible,
+.ps__card:focus-visible {
+  outline: 2px solid var(--ps-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ps__layer, .ps__track, .ps__card { transition: none; }
+}

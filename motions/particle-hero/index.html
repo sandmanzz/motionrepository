@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Particle Relief Hero — Stock Motion</title>
+  <!-- font opsional: tanpa ini motion tetap jalan dengan serif sistem -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="motion.css">
+  <style>
+    /* hanya untuk halaman demo ini, bukan bagian dari motion */
+    html, body { margin: 0; background: #070a1a; }
+  </style>
+</head>
+<body>
+
+  <!-- ====== MOTION: mulai salin dari sini ====== -->
+  <section class="ph" data-particle-hero>
+    <canvas class="ph__canvas" data-ph-canvas aria-hidden="true"></canvas>
+    <img class="ph__fallback" src="assets/relief.webp" alt="" aria-hidden="true">
+
+    <nav class="ph__nav" aria-label="Primary">
+      <a href="#collection">Collection</a>
+      <a href="#atelier">Atelier</a>
+      <a href="#enquire">Enquire</a>
+    </nav>
+
+    <div class="ph__copy">
+      <p class="ph__eyebrow">Lacquer &amp; Gold</p>
+      <h1 class="ph__title" data-ph-title>GRUS</h1>
+      <p class="ph__sub">Stillness, in full flight.</p>
+    </div>
+
+    <p class="ph__hint">Move to polish the gold</p>
+  </section>
+  <!-- ====== MOTION: sampai sini ====== -->
+
+  <script src="motion.js"></script>
+  <script>
+    ParticleHero.mount(document.querySelector("[data-particle-hero]"), {
+      image: "assets/relief.webp"
+    });
+  </script>
+</body>
+</html>

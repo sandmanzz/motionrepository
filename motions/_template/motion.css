@@ -1,0 +1,8 @@
+/* Ganti prefix .xx dengan singkatan unik motion ini. Semua selector wajib memakai prefix itu. */
+.xx {
+  /* token tema di sini, mis. --xx-ink, --xx-accent */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* matikan / sederhanakan animasi */
+}
